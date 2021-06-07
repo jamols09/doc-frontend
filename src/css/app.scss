@@ -1,0 +1,14 @@
+// app global css in SCSS form
+
+//Comforta Font
+@font-face {
+    font-family: Comforta;
+    src: url(./fonts/Comfortaa.woff);
+}
+.my-font {
+    font-family: 'Comforta';
+}
+
+body {
+    font-family: 'Comforta';
+}
