@@ -4,10 +4,10 @@
       <PatientRecordTable />
     </div>
     <div class="row">
-      <div class="q-pa-sm col-xs-12 col-md-6">
+      <!-- <div class="q-pa-sm col-xs-12 col-md-6">
         <PatientInfo />
-      </div>
-      <div class="q-pa-sm col-xs-12 col-md-6">
+      </div> -->
+      <div class="q-pa-sm col-xs-12 col-md-12">
         <PatientHistory />
       </div>
     </div>
@@ -25,7 +25,7 @@ export default defineComponent({
   name: 'Records',
   components: {
     PatientRecordTable,
-    PatientInfo,
+    // PatientInfo,
     PatientHistory
   },
   setup() {

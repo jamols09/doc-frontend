@@ -20,18 +20,17 @@
             >
                 <!-- Search Filter -->
                 <template v-slot:top-left>
-                    <q-input outlined  dense debounce="1000" v-model="filter" placeholder="Search">
+                    <q-input outlined dense debounce="1000" v-model="filter" placeholder="first middle surname" hint="Search">
                         <template v-slot:append>
                             <q-icon name="search" />
                         </template>
+                        
                     </q-input>
-                </template>
-
-                <!-- Filter type -->
-                <template v-slot:top-right>
                     <q-select outlined  dense v-model="filterType" emit-value :options="options" hint="Filter Type" />
                 </template>
-
+                    
+                <!-- Filter type -->
+                
                 <!-- Avatar -->
                 <template v-slot:body-cell-avatar="props"> <!-- body-cell-[field-name-of-column] -->
                     <q-td :props="props">
@@ -154,7 +153,7 @@ name: 'PatientRecordTable',
   .q-table__bottom,
   thead tr:first-child th
     /* bg color is important for th; just specify one */
-    background-color: #c9f1e6
+    background-color: white
 
   thead tr th
     position: sticky
