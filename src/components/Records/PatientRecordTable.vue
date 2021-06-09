@@ -4,7 +4,7 @@
         <div>
             <q-table
                 title="Treats"
-                style="height: 470px"
+                style="height: 600px"
                 class="patient-table-sticky-header"
                 :rows="rows"
                 :columns="columns"
@@ -24,7 +24,6 @@
                         <template v-slot:append>
                             <q-icon name="search" />
                         </template>
-                        
                     </q-input>
                     <q-select outlined  dense v-model="filterType" emit-value :options="options" hint="Filter Type" />
                 </template>
@@ -160,6 +159,11 @@ name: 'PatientRecordTable',
     z-index: 1
   thead tr:first-child th
     top: 0
+
+  .q-table thead tr, 
+  .q-table tbody td
+    padding: 0 0
+    height: 0px
 
   /* this is when the loading indicator appears */
   &.q-table--loading thead tr:last-child th
