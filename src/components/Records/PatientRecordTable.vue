@@ -20,7 +20,7 @@
             >
                 <!-- Search Filter -->
                 <template v-slot:top-left>
-                    <q-input outlined dense debounce="1000" v-model="filter" placeholder="first middle surname" hint="Search">
+                    <q-input outlined dense debounce="1000" v-model="filter" placeholder="F M S" hint="Search">
                         <template v-slot:append>
                             <q-icon name="search" />
                         </template>
