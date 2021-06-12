@@ -1,7 +1,8 @@
 <template>
-  <q-page class="flex wrap gutter">
-    <div class="q-pa-md row items-start q-gutter-sm">
+  <q-page class="flex wrap">
+    <div class="row items-start">
       <!-- Number of Records -->
+    <div class="col-1 q-pa-md col-xs-12 col-sm-12 col-md-4">
       <q-card flat bordered class="my-card col">
         <q-card-section class="bg-primary text-white q-pt-lg">
           <div class="text-h6">Statistics</div>
@@ -17,10 +18,12 @@
           lor sit  ipsum dolor sit  ipsum dolor sit  ipsum dolor sit  dolor sit  ipsum dolor si
           t  ipsum dolor sit  ipsum dolor sit  ipsum dolor sit  ipsum dolor s
           it  dolor sit  ipsum dolor sit  ipsum dolor sit  i
-          psum dolor sit  ipsum dolor sit  ipsum dolor sit 
+          psum dolor sit  ipsum dolor sit  ipsum dolor sit.
         </q-card-section>
       </q-card>
+    </div>
       <!-- Latest Record -->
+    <div class="col-2 q-pa-md col-xs-12 col-sm-19 col-md-4">
       <q-card flat bordered class="my-card col">
         <q-card-section class="bg-primary text-white q-pt-lg">
           <div class="text-h6">Summary</div>
@@ -39,6 +42,8 @@
           psum dolor sit  ipsum dolor sit  ipsum dolor sit 
         </q-card-section>
       </q-card>
+    </div>
+    <div class="col-3 q-pa-md col-xs-12 col-sm-19 col-md-4">
       <!-- Latest Record -->
       <q-card flat bordered class="my-card col">
         <q-card-section class="bg-primary text-white q-pt-lg">
@@ -58,6 +63,7 @@
           psum dolor sit  ipsum dolor sit  ipsum dolor sit 
         </q-card-section>
       </q-card>
+    </div>
     </div>
   </q-page>
 </template>
