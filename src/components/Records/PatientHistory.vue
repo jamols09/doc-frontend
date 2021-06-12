@@ -19,13 +19,13 @@
                     <q-card-section class="row justify-center">
                         <div class="col-sm-6">
                             <div class="">
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="red" text-color="white" icon="sick">
+                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
                                     Smoker
                                     <q-tooltip>
                                         Some text as content of Tooltip
                                     </q-tooltip>
                                 </q-chip>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="red" text-color="white" icon="sick">
+                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
                                     Fever
                                     <q-tooltip>
                                         Some text as content of Tooltip. [DATE 05/21/1996]
@@ -33,7 +33,7 @@
                                 </q-chip>
                             </div>
                             <div>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="red" text-color="white" icon="sick">
+                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
                                     Fever
                                     <q-tooltip>
                                         Some text as content of Tooltip. [DATE 05/21/1996]
@@ -72,133 +72,103 @@
 
                 <q-card-section class="col-xs-12 col-sm-12 col-md-5 text-center">
                     <!-- <img src="https://cdn.quasar.dev/img/mountains.jpg"> -->
-                    <q-card-section>
-                        <div class="text-h6">Symptoms</div>
-                    </q-card-section>
-                    <q-card-section>
-                        <div class="row">
-                            <q-select
-                                outlined 
-                                v-model="model"
-                                use-input
-                                hide-selected
-                                fill-input
-                                input-debounce="500"
-                                :options="options"
-                                label="Symptoms"
-                                @filter-abort="abortFilterFn"
-                                class="col-grow q-ma-sm"
-                            >
-                                <template v-slot:no-option>
-                                    <q-item>
-                                        <q-item-section class="text-grey">
-                                            No results
-                                        </q-item-section>
-                                    </q-item>
-                                </template>
-                            </q-select>
-                            <!-- DATE -->
-                            <q-input 
-                                outlined  
-                                v-model="symptomDate" 
-                                mask="date" 
-                                :rules="['date']" 
-                                class="col-grow q-ma-sm"
-                            >
-                                <template v-slot:append>
-                                    <q-icon name="event" class="cursor-pointer">
-                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="symptomDate">
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                        </q-date>
-                                    </q-popup-proxy>
-                                    </q-icon>
-                                </template>
-                            </q-input>
-                         </div>
-                        <br/>
-                        <!-- Textarea -->
-                        <q-input
-                            v-model="symptomsDescription"
-                            outlined 
-                            type="textarea"
-                            label="Description"
-                            class="q-mx-sm"
-                        />
-                    </q-card-section>
-                    <q-card-section>
-                        <div class="text-h6">Diagnosis</div>
-                    </q-card-section>
-                    <q-card-section>
-                        <div class="row">
-                            <q-select
-                                outlined 
-                                v-model="model"
-                                use-input
-                                hide-selected
-                                fill-input
-                                input-debounce="500"
-                                :options="options"
-                                label="Diagnosis"
-                                @filter-abort="abortFilterFn"
-                                class="col-grow q-ma-sm"
-                            >
-                                <template v-slot:no-option>
-                                    <q-item>
-                                        <q-item-section class="text-grey">
-                                            No results
-                                        </q-item-section>
-                                    </q-item>
-                                </template>
-                            </q-select>
-                            <!-- DATE -->
-                            <q-input 
-                                outlined  
-                                v-model="symptomDate" 
-                                mask="date" 
-                                :rules="['date']" 
-                                class="col-grow q-ma-sm"
-                            >
-                                <template v-slot:append>
-                                    <q-icon name="event" class="cursor-pointer">
-                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                        <q-date v-model="symptomDate">
-                                        <div class="row items-center justify-end">
-                                            <q-btn v-close-popup label="Close" color="primary" flat />
-                                        </div>
-                                        </q-date>
-                                    </q-popup-proxy>
-                                    </q-icon>
-                                </template>
-                            </q-input>
-                        </div>
-                        <br/>
-                        <!-- Textarea -->
-                        <q-input
-                            v-model="symptomsDescription"
-                            outlined 
-                            type="textarea"
-                            label="Description"
-                            class="q-mx-sm"
-                        />
-                    </q-card-section>
-                    <div class="q-my-lg row">
-                        <div class="col"></div>
-                        <div class="col-auto q-mr-lg review-button" v-if="true">
-                            Review
-                        </div>
-                        <div class="col-auto">
-                            <input type="file" @change="onFileChange">
+                    <div class="q-pt-lg">
+                        <q-card-section>
+                            <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" />
+                        </q-card-section>
+                        <div v-if="symptomsRepeater.length">
+                            <div v-for="symp in symptomsRepeater" :key="symp.name">
+                                <q-card-section class="q-mb-md">
+                                    <div class="row">
+                                        <q-select use-input hide-selected fill-input class="col-grow q-ma-sm" input-debounce="500" label="Symptoms" label-color="blue" color="blue" :options="options" @filter-abort="abortFilterFn" v-model="symp.name">
+                                            <template v-slot:no-option>
+                                                <q-item>
+                                                    <q-item-section class="text-grey">
+                                                        No results
+                                                    </q-item-section>
+                                                </q-item>
+                                            </template>
+                                        </q-select>
+                                        <!-- DATE -->
+                                        <q-input outlined v-model="symp.date" color="blue" mask="date" :rules="['date']" label-color="blue" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                            <template v-slot:append>
+                                                <q-icon name="event" color="blue"  class="cursor-pointer">
+                                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                                        <q-date v-model="symp.date">
+                                                            <div class="row items-center justify-end">
+                                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                                            </div>
+                                                        </q-date>
+                                                    </q-popup-proxy>
+                                                </q-icon>
+                                            </template>
+                                        </q-input>
+                                    </div>
+                                    <br/>
+                                    <!-- Textarea -->
+                                    <div style="max-width: auto; max-height: 40px;">
+                                        <q-input v-model="symp.description" type="textarea" label="Description" class="q-mx-sm" color="blue" label-color="blue"  autogrow outlined />
+                                    </div>
+                                </q-card-section>
+                            </div>
                         </div>
                     </div>
-                    <div class="q-my-lg">
-                        <div class="col"></div>
-                        <div class="col">
-                            <q-btn label="Submit" type="submit" color="primary" />
+                    <div class="q-pt-lg">
+                        <q-card-section>
+                            <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" />
+                        </q-card-section>
+                        <div v-if="diagnosisRepeater.length">
+                            <div v-for="diag in diagnosisRepeater" :key="diag.name">
+                                <q-card-section>
+                                    <div class="row">
+                                        <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange" label="Diagnosis" color="orange" :options="options" @filter-abort="abortFilterFn" class="col-grow q-ma-sm">
+                                            <template v-slot:no-option>
+                                                <q-item>
+                                                    <q-item-section class="text-grey">
+                                                        No results
+                                                    </q-item-section>
+                                                </q-item>
+                                            </template>
+                                        </q-select>
+                                        <!-- DATE -->
+                                        <q-input outlined v-model="diag.date" mask="date" :rules="['date']" label-color="orange" color="orange" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                            <template v-slot:append>
+                                                <q-icon name="event" color="orange" class="cursor-pointer">
+                                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                                        <q-date v-model="diag.date">
+                                                            <div class="row items-center justify-end">
+                                                                <q-btn v-close-popup label="Close" color="primary" flat />
+                                                            </div>
+                                                        </q-date>
+                                                    </q-popup-proxy>
+                                                </q-icon>
+                                            </template>
+                                        </q-input>
+                                    </div>
+                                    <br/>
+                                    <!-- Textarea -->
+                                    <div style="max-width: auto; max-height: 40px;">
+                                        <q-input v-model="diag.description" autogrow outlined label-color="orange" color="orange" type="textarea" label="Description" class="q-mx-sm"/>
+                                    </div>
+                                </q-card-section>
+                            </div>
                         </div>
-                        <div class="col"></div>
+                        <div class="q-my-lg row">
+                            <div class="col"></div>
+                            <div class="col-auto q-mr-lg review-button" v-if="true">
+                                Review
+                            </div>
+                            <div class="col-auto">
+                                <input type="file" @change="onFileChange">
+                            </div>
+                        </div>
+                        <div class="q-my-lg">
+                            <div class="col"></div>
+                            <div class="col">
+                                <q-btn outline label="Submit" type="submit" color="primary" />
+                            </div>
+                            <div class="col"></div>
+                        </div>
                     </div>
                 </q-card-section>
             </div>
@@ -207,7 +177,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, onUnmounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, reactive } from 'vue';
 
 export default defineComponent({
     name: 'PatientHistory',
@@ -220,19 +190,29 @@ export default defineComponent({
         const onFileChange = ref(null)
         //image
         const imageDisplay = ref(null)
-        //Chip
+        //chip
         const gingerbread = ref(true)
-        const symptomDate = ref(true)
+        //symptom
+        const symptomsDescription = ref(null)
+        const symptomOption = ref(null)
+        const symptomDate = ref(null)
+        //diagnosis
+        const diagnosisDescription = ref(null)
+        const diagnosisOption = ref(null)
+        const diagnosisDate = ref(null)
+        //repeater fields
+        const symptomsRepeater = reactive([])
+        const diagnosisRepeater = reactive([])
 
         const getSize = () => {
             windowSize.value = window.innerWidth
             if(window.innerWidth <= 500) {
                 avatarSize.value = (500 * 0.60)
-            }
-            else if(window.innerWidth >= 500) {
+            } else if(window.innerWidth >= 500) {
                 avatarSize.value = (window.innerWidth * 0.40)
             }
-            //Hide Div
+            
+            //hide div
             if(window.innerWidth < 1025) {
                 display.value = "none"
             } else {
@@ -243,31 +223,43 @@ export default defineComponent({
         onMounted(() => { getSize(),window.addEventListener('resize', getSize) })
         onUnmounted(() => { window.removeEventListener('resize', getSize) })
 
-        const stringOptions = ['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle']
-        const options = ref(stringOptions)
-        const symptomsDescription = ref(null)
-        const abortFilterFn = () => {
-            console.log('delayed filter aborted')
-        }
-   
+        const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
+        const abortFilterFn = () => { console.log('delayed filter aborted') }
+
+        //symptom repeater
+        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'date': symptomDate.value}); console.log(symptomsRepeater)}
+        const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'date': diagnosisDate.value}) }
+        
         return { 
             //window Size
             data,
             avatarSize,
             windowSize,
-            //Symptoms
+            //chip
+            gingerbread,
+            //fileupload
+            onFileChange,
+            //image
+            imageDisplay,
+            //symptom repeater
+            addSymptom,
+            symptomsRepeater,
+            //diagnosis repeater
+            addDiagnosis,
+            diagnosisRepeater,
+            //symptom
+            symptomsDescription,
+            symptomDate,
+            symptomOption,
+            //diagnosis
+
+
+
             model: ref(null),
             options,
             abortFilterFn,
-            symptomsDescription,
             display,
-            symptomDate,
-            //Chip
-            gingerbread,
-            //Fileupload
-            onFileChange,
-            //Image
-            imageDisplay,
+            
         }
     }
 })

@@ -39,3 +39,6 @@ export async function requestPatientTable (context, payload) {
     console.log('/patient?'+url)
     return await api.get('/patient?'+url);
 }
+export async function requestSymptomsList (context, payload) {
+    // return await api.get('/')
+}
