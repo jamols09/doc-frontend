@@ -73,7 +73,7 @@
                     <!-- <img src="https://cdn.quasar.dev/img/mountains.jpg"> -->
                     <div class="q-pt-lg">
                         <q-card-section>
-                            <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" />
+                            <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" :disable="isDisabled" />
                         </q-card-section>
                         <div v-if="symptomsRepeater.length">
                             <div v-for="(symp,index) in symptomsRepeater" :key="symp.name">
@@ -115,13 +115,13 @@
                     </div>
                     <div class="q-pt-lg">
                         <q-card-section>
-                            <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" />
+                            <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" :disable="isDisabled" />
                         </q-card-section>
                         <div v-if="diagnosisRepeater.length">
                             <div v-for="(diag,index) in diagnosisRepeater" :key="diag.name">
                                 <q-card-section class="q-mb-md">
                                     <!-- Delete button -->
-                                    <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
+                                    <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
                                         <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange" label="Diagnosis" color="orange" :options="options" @filter-abort="abortFilterFn" class="col-grow q-ma-sm">
                                             <template v-slot:no-option>
@@ -160,13 +160,13 @@
                                 Review
                             </div>
                             <div class="col-auto">
-                                <input type="file" @change="onFileChange">
+                                <input type="file" @change="onFileChange" :disabled="isDisabled">
                             </div>
                         </div>
                         <div class="q-my-lg">
                             <div class="col"></div>
                             <div class="col">
-                                <q-btn outline label="Submit" type="submit" color="primary" />
+                                <q-btn outline @click="sendData" label="Submit" type="submit" :disable="isDisabled" color="primary" />
                             </div>
                             <div class="col"></div>
                         </div>
@@ -178,7 +178,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, onUnmounted, reactive, computed } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, reactive, computed, watch } from 'vue';
+import { useStore } from 'vuex'
 
 export default defineComponent({
     name: 'PatientHistory',
@@ -186,7 +187,7 @@ export default defineComponent({
         propSelected: Object
     },
     setup(props) {
-
+        const $store = useStore()
         const windowSize = ref(null)
         const avatarSize = ref(null)
         const display = ref(null)
@@ -227,6 +228,18 @@ export default defineComponent({
             }
             return ''
         })
+        const isDisabled = computed(() => {
+            if(!selectedPatient.value) {
+                return true
+            }
+            return false
+        })
+        
+        watch(isDisabled, (now, old) => {
+            //clear array when no patient selected
+            symptomsRepeater.splice(0)
+            diagnosisRepeater.splice(0)
+        })
 
         const getSize = () => {
             windowSize.value = window.innerWidth
@@ -251,10 +264,15 @@ export default defineComponent({
         const abortFilterFn = () => { console.log('delayed filter aborted') }
 
         //symptom repeater
-        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'date': symptomDate.value}); console.log(symptomsRepeater)}
+        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'date': symptomDate.value});}
         const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'date': diagnosisDate.value}) }
         const removeDiagnosis = (event) => { diagnosisRepeater.splice(event, 1) }
         const removeSymptom = (event) => { symptomsRepeater.splice(event, 1) }
+
+        //send data to server
+        const sendData = () => {            
+            $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater})
+        }
         
         return { 
             //window Size
@@ -284,6 +302,10 @@ export default defineComponent({
             //props
             selectedPatient,
             selectedPatientAge,
+
+            //submit
+            isDisabled,
+            sendData,
 
             model: ref(null),
             options,
