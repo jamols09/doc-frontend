@@ -8,16 +8,15 @@
 
             <div class="q-pa-xs row">
                 <q-card-section class="col-xs-12 col-sm-12 col-md-6 text-center">
-                    <q-avatar size="233px">
-                        <!-- <q-img src="https://cdn.quasar.dev/img/mountains.jpg" sizes="(max-width: 400px) 400w"></q-img> -->
+                    <q-avatar size="223px">
                         <img src="https://cdn.quasar.dev/img/mountains.jpg">
                     </q-avatar>
-                    <q-card-section>
-                        <div class="text-h6"> &nbsp;&nbsp; Oliver Veloso Maglana  &nbsp;&nbsp; </div>
-                        <div class="text-subtitle2">Age {{ windowSize }} </div>
+                    <q-card-section v-if="selectedPatient">
+                        <div class="text-h6"> &nbsp;&nbsp; {{ selectedPatient.firstname }} {{ selectedPatient.middlename }} {{ selectedPatient.lastname }}  &nbsp;&nbsp; </div>
+                        <div class="text-subtitle2" v-if="selectedPatient">Age: {{ selectedPatientAge }} | windowSize: {{ windowSize }} </div>
                     </q-card-section>
                     <q-card-section class="row justify-center">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" v-if="selectedPatient">
                             <div class="">
                                 <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
                                     Smoker
@@ -41,7 +40,7 @@
                                 </q-chip>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" v-if="selectedPatient">
                             <div class="">
                                 <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="orange-9" text-color="white" icon="description">
                                     Alchoholic
@@ -77,8 +76,10 @@
                             <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" />
                         </q-card-section>
                         <div v-if="symptomsRepeater.length">
-                            <div v-for="symp in symptomsRepeater" :key="symp.name">
+                            <div v-for="(symp,index) in symptomsRepeater" :key="symp.name">
                                 <q-card-section class="q-mb-md">
+                                    <!-- Delete button -->
+                                    <q-btn @click="removeSymptom(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
                                         <q-select use-input hide-selected fill-input class="col-grow q-ma-sm" input-debounce="500" label="Symptoms" label-color="blue" color="blue" :options="options" @filter-abort="abortFilterFn" v-model="symp.name">
                                             <template v-slot:no-option>
@@ -90,7 +91,7 @@
                                             </template>
                                         </q-select>
                                         <!-- DATE -->
-                                        <q-input outlined v-model="symp.date" color="blue" mask="date" :rules="['date']" label-color="blue" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                        <q-input v-model="symp.date" color="blue" mask="date" :rules="['date']" label-color="blue" class="col-grow q-ma-sm" label="YYYY-MM-DD">
                                             <template v-slot:append>
                                                 <q-icon name="event" color="blue"  class="cursor-pointer">
                                                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -104,7 +105,6 @@
                                             </template>
                                         </q-input>
                                     </div>
-                                    <br/>
                                     <!-- Textarea -->
                                     <div style="max-width: auto; max-height: 40px;">
                                         <q-input v-model="symp.description" type="textarea" label="Description" class="q-mx-sm" color="blue" label-color="blue"  autogrow outlined />
@@ -118,8 +118,10 @@
                             <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" />
                         </q-card-section>
                         <div v-if="diagnosisRepeater.length">
-                            <div v-for="diag in diagnosisRepeater" :key="diag.name">
-                                <q-card-section>
+                            <div v-for="(diag,index) in diagnosisRepeater" :key="diag.name">
+                                <q-card-section class="q-mb-md">
+                                    <!-- Delete button -->
+                                    <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
                                         <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange" label="Diagnosis" color="orange" :options="options" @filter-abort="abortFilterFn" class="col-grow q-ma-sm">
                                             <template v-slot:no-option>
@@ -131,7 +133,7 @@
                                             </template>
                                         </q-select>
                                         <!-- DATE -->
-                                        <q-input outlined v-model="diag.date" mask="date" :rules="['date']" label-color="orange" color="orange" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                        <q-input v-model="diag.date" mask="date" :rules="['date']" label-color="orange" color="orange" class="col-grow q-ma-sm" label="YYYY-MM-DD">
                                             <template v-slot:append>
                                                 <q-icon name="event" color="orange" class="cursor-pointer">
                                                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -145,7 +147,6 @@
                                             </template>
                                         </q-input>
                                     </div>
-                                    <br/>
                                     <!-- Textarea -->
                                     <div style="max-width: auto; max-height: 40px;">
                                         <q-input v-model="diag.description" autogrow outlined label-color="orange" color="orange" type="textarea" label="Description" class="q-mx-sm"/>
@@ -177,13 +178,15 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, onUnmounted, reactive } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, reactive, computed } from 'vue';
 
 export default defineComponent({
     name: 'PatientHistory',
-    setup() {
-        
-        const data = ref(null)
+    props: {
+        propSelected: Object
+    },
+    setup(props) {
+
         const windowSize = ref(null)
         const avatarSize = ref(null)
         const display = ref(null)
@@ -203,6 +206,27 @@ export default defineComponent({
         //repeater fields
         const symptomsRepeater = reactive([])
         const diagnosisRepeater = reactive([])
+        //props
+        const selectedPatient = computed(() => props.propSelected)
+        const selectedPatientAge = computed(() => {
+            if(selectedPatient.value) {
+                /**
+                 * Age Calculation
+                 * Author: naveen
+                 * Url: https://stackoverflow.com/a/7091965/3362771
+                 */
+
+                let date = new Date()
+                let birthdate = new Date(selectedPatient.value.birthdate)
+                let age = date.getFullYear() - birthdate.getFullYear()
+                let mm = date.getMonth() - birthdate.getMonth()
+                if(mm < 0 || (mm === 0 && date.getDate() < birthdate.getDate())) {
+                    age--
+                }
+                return age
+            }
+            return ''
+        })
 
         const getSize = () => {
             windowSize.value = window.innerWidth
@@ -229,10 +253,11 @@ export default defineComponent({
         //symptom repeater
         const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'date': symptomDate.value}); console.log(symptomsRepeater)}
         const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'date': diagnosisDate.value}) }
+        const removeDiagnosis = (event) => { diagnosisRepeater.splice(event, 1) }
+        const removeSymptom = (event) => { symptomsRepeater.splice(event, 1) }
         
         return { 
             //window Size
-            data,
             avatarSize,
             windowSize,
             //chip
@@ -244,9 +269,11 @@ export default defineComponent({
             //symptom repeater
             addSymptom,
             symptomsRepeater,
+            removeSymptom,
             //diagnosis repeater
             addDiagnosis,
             diagnosisRepeater,
+            removeDiagnosis,
             //symptom
             symptomsDescription,
             symptomDate,
@@ -254,6 +281,9 @@ export default defineComponent({
             //diagnosis
 
 
+            //props
+            selectedPatient,
+            selectedPatientAge,
 
             model: ref(null),
             options,
