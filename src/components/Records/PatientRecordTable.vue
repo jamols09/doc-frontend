@@ -16,7 +16,9 @@
                 row-key="id"
                 binary-state-sort
                 selection="single"
+                @update:selected="sendSelected"
                 @request="onRequest"
+                :visible-columns="columnDisplay"
             >
                 <!-- Search Filter -->
                 <template v-slot:top-left>
@@ -60,12 +62,24 @@ const columns = [
   { name: 'mobile', align: 'center', label: 'Mobile', field: 'mobile', sortable: true },
 ]
 
+const columnDisplay = [
+    'firstname',
+    'middlename',
+    'lastname',
+    'birthdate',
+    'occupation',
+    'referred_by',
+    'telephone',
+    'mobile'
+]
+
 import { defineComponent, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
-name: 'PatientRecordTable',
-    setup() 
+    name: 'PatientRecordTable',
+    emits: ['sendSelected'],
+    setup(props, {emit}) 
     {
         const $store = useStore()
 
@@ -97,7 +111,6 @@ name: 'PatientRecordTable',
         const separator = ref('horizontal')
 
         function onRequest (props) {
-            
             const { page, rowsPerPage, sortBy, descending } = props.pagination
             const filter = props.filter === undefined ? '' : props.filter
             const fetchCount = rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage
@@ -125,7 +138,12 @@ name: 'PatientRecordTable',
             filterType.value = {label:'None', code: ''}
         })
 
+        const sendSelected = (event) => {
+            emit('sendSelected', event[0])
+        }
+
         return {
+            columnDisplay,
             filter,
             filterType,
             loading,
@@ -136,7 +154,7 @@ name: 'PatientRecordTable',
             onRequest,
             separator,
             options, //dropdown options
-            
+            sendSelected
         }
     }
 
