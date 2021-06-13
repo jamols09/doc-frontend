@@ -17,7 +17,7 @@ export function sendImageAction ({ commit }, payload) {
 export async function sendPatientInfo () {
     const data = this.getters['patient/get']
     await axios.get('http://api.docmaglana.test/sanctum/csrf-cookie')
-    return api.post('/patient/store', data )
+    return api.post('/patient', data )
 }
 export function setButtonDisabled({ commit }, payload) {
     commit('SET_BUTTON_SUBMIT', payload)
@@ -36,9 +36,28 @@ export async function requestPatientTable (context, payload) {
         }
         i++
     }
-    console.log('/patient?'+url)
+    // console.log('/patient?'+url)
     return await api.get('/patient?'+url);
 }
 export async function requestSymptomsList (context, payload) {
     // return await api.get('/')
+}
+
+export async function sendHistorySymptomDiagnosis(context, payload) {
+    console.log(payload)
+    let patient_id = payload.selectedPatient.value.id
+    let symptomsRepeater = payload.symptomsRepeater
+    let history = await api.post('/patient/history', { patient_id })    
+
+    // symptomsRepeater.forEach(function (data) {
+    //     console.log(data)
+    // })
+    let symptoms = ''
+    if(symptomsRepeater.length) {
+        console.log(symptomsRepeater)
+        symptoms = await api.post('/patient/history/symptoms', symptomsRepeater)
+    }
+
+    
+    let diagnosis = await api.post('/patient/history/diagnosis')
 }
