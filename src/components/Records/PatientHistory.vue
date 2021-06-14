@@ -91,11 +91,11 @@
                                             </template>
                                         </q-select>
                                         <!-- DATE -->
-                                        <q-input v-model="symp.date" color="blue" mask="date" :rules="['date']" label-color="blue" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                        <q-input v-model="symp.occured_on" color="blue" mask="date" :rules="['date']" label-color="blue" class="col-grow q-ma-sm" label="YYYY-MM-DD">
                                             <template v-slot:append>
                                                 <q-icon name="event" color="blue"  class="cursor-pointer">
                                                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                                        <q-date v-model="symp.date">
+                                                        <q-date v-model="symp.occured_on">
                                                             <div class="row items-center justify-end">
                                                                 <q-btn v-close-popup label="Close" color="primary" flat />
                                                             </div>
@@ -133,11 +133,11 @@
                                             </template>
                                         </q-select>
                                         <!-- DATE -->
-                                        <q-input v-model="diag.date" mask="date" :rules="['date']" label-color="orange" color="orange" class="col-grow q-ma-sm" label="YYYY-MM-DD">
+                                        <q-input v-model="diag.occured_on" mask="date" :rules="['date']" label-color="orange" color="orange" class="col-grow q-ma-sm" label="YYYY-MM-DD">
                                             <template v-slot:append>
                                                 <q-icon name="event" color="orange" class="cursor-pointer">
                                                     <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                                        <q-date v-model="diag.date">
+                                                        <q-date v-model="diag.occured_on">
                                                             <div class="row items-center justify-end">
                                                                 <q-btn v-close-popup label="Close" color="primary" flat />
                                                             </div>
@@ -264,13 +264,13 @@ export default defineComponent({
         const abortFilterFn = () => { console.log('delayed filter aborted') }
 
         //symptom repeater
-        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'date': symptomDate.value});}
-        const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'date': diagnosisDate.value}) }
+        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'occured_on': symptomDate.value}); }
+        const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'occured_on': diagnosisDate.value}) }
         const removeDiagnosis = (event) => { diagnosisRepeater.splice(event, 1) }
         const removeSymptom = (event) => { symptomsRepeater.splice(event, 1) }
 
         //send data to server
-        const sendData = () => {            
+        const sendData = () => {
             $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater})
         }
         
