@@ -44,18 +44,15 @@ export async function requestSymptomsList (context, payload) {
 }
 
 export async function sendHistorySymptomDiagnosis(context, payload) {
-    console.log(payload)
-    let patient_id = payload.selectedPatient.value.id
+    const patient_id = payload.selectedPatient.value.id
     let symptomsRepeater = payload.symptomsRepeater
-    let history = await api.post('/patient/history', { patient_id })    
+    let history  = await api.post('/patient/history', { patient_id })   
 
-    // symptomsRepeater.forEach(function (data) {
-    //     console.log(data)
-    // })
-    let symptoms = ''
     if(symptomsRepeater.length) {
-        console.log(symptomsRepeater)
-        symptoms = await api.post('/patient/history/symptoms', symptomsRepeater)
+        symptomsRepeater.forEach(element => {
+            element.history_id = history.data.id
+        })
+        const symptoms = await api.post('/patient/history/symptoms', symptomsRepeater )
     }
 
     
