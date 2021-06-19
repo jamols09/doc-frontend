@@ -7,67 +7,8 @@
             <q-separator />
 
             <div class="q-pa-xs row">
-                <q-card-section class="col-xs-12 col-sm-12 col-md-6 text-center">
-                    <q-avatar size="223px">
-                        <img src="https://cdn.quasar.dev/img/mountains.jpg">
-                    </q-avatar>
-                    <q-card-section v-if="selectedPatient">
-                        <div class="text-h6"> &nbsp;&nbsp; {{ selectedPatient.firstname }} {{ selectedPatient.middlename }} {{ selectedPatient.lastname }}  &nbsp;&nbsp; </div>
-                        <div class="text-subtitle2" v-if="selectedPatient">Age: {{ selectedPatientAge }} | windowSize: {{ windowSize }} </div>
-                    </q-card-section>
-                    <q-card-section class="row justify-center">
-                        <div class="col-sm-6" v-if="selectedPatient">
-                            <div class="">
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
-                                    Smoker
-                                    <q-tooltip>
-                                        Some text as content of Tooltip
-                                    </q-tooltip>
-                                </q-chip>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
-                                    Fever
-                                    <q-tooltip>
-                                        Some text as content of Tooltip. [DATE 05/21/1996]
-                                    </q-tooltip>
-                                </q-chip>
-                            </div>
-                            <div>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="blue" text-color="white" icon="sick">
-                                    Fever
-                                    <q-tooltip>
-                                        Some text as content of Tooltip. [DATE 05/21/1996]
-                                    </q-tooltip>
-                                </q-chip>
-                            </div>
-                        </div>
-                        <div class="col-sm-6" v-if="selectedPatient">
-                            <div class="">
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="orange-9" text-color="white" icon="description">
-                                    Alchoholic
-                                    <q-tooltip>
-                                        Some text as content of Tooltip
-                                    </q-tooltip>
-                                </q-chip>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="orange-9" text-color="white" icon="description">
-                                    Arthritis
-                                    <q-tooltip>
-                                        Some text as content of Tooltip
-                                    </q-tooltip>
-                                </q-chip>
-                                <q-chip removable size="12px" v-model="gingerbread" @remove="log('Icecream')" color="orange-9" text-color="white" icon="description">
-                                    Parkinsons
-                                    <q-tooltip>
-                                        Some text as content of Tooltip
-                                    </q-tooltip>
-                                </q-chip>
-                            </div>
-                        </div>
-                    </q-card-section>
-                </q-card-section>
-
-                <q-card-section class="div-separator" :style="'display:' +display+ ';'" ></q-card-section>
-                <q-separator :vertical="true" class="div-separator" :style="'display:' +display+ ';'" />
-                <q-card-section class="div-separator" :style="'display:' +display+ ';'" ></q-card-section>
+                
+                <HistoryDetailsComp :propPatSelected="selectedPatient" />
 
                 <q-card-section class="col-xs-12 col-sm-12 col-md-5 text-center">
                     <!-- <img src="https://cdn.quasar.dev/img/mountains.jpg"> -->
@@ -155,13 +96,43 @@
                             </div>
                         </div>
                         <div class="q-my-lg row">
-                            <div class="col">
+                            <div class="q-py-sm col-md-4 col-xs-12" >
+                                <!-- DATE -->
+                                <q-input filled v-model="historyDate" mask="date" :rules="['date']" label="History Date" style="max-width: 300px; display: block; margin: 0 auto;" v-if="historyfiles">
+                                    <template v-slot:append>
+                                        <q-icon name="event" class="cursor-pointer">
+                                            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                                <q-date v-model="historyDate">
+                                                    <div class="row items-center justify-end">
+                                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                                    </div>
+                                                </q-date>
+                                            </q-popup-proxy>
+                                        </q-icon>
+                                    </template>
+                                </q-input>
                             </div>
-                            <div class="col-auto q-mr-lg review-button" v-if="true">
-                                Review
+                            <div class="q-py-sm col-md-4 col-xs-12">
+                               <q-btn color="primary" label="Review" v-if="historyfiles" @click="reviewImage = true"  />
                             </div>
-                            <div class="col-auto">
-                                <input type="file" @change="onFileChange" :disabled="isDisabled">
+                            <div class="q-py-sm col-md-4 col-xs-12">
+                                <!-- File upload -->
+                                <q-file
+                                    v-model="historyfiles"
+                                    label="Pick files"
+                                    filled
+                                    counter
+                                    :counter-label="counterLabelFn"
+                                    max-files="1"
+                                    multiple
+                                    style="max-width: 300px; display: block; margin: 0 auto;"
+                                    :disable="isDisabled"
+                                    @change="onUploadFile"
+                                >
+                                    <template v-slot:prepend>
+                                        <q-icon name="attach_file" />
+                                    </template>
+                                </q-file>
                             </div>
                         </div>
                         <div class="q-my-lg">
@@ -176,6 +147,25 @@
             </div>
         </q-card>
     </q-form>
+
+    <q-dialog v-model="reviewImage">
+      <q-card class="">
+        <q-card-section>
+          <div class="text-h6 text-center">Review</div>
+        </q-card-section>
+        <!-- Modal Image -->
+        <q-card-section class="q-py-md">
+            <div v-if="historyImg">
+                <img :src="historyImg" style="max-width: 90%; max-height: 70%; margin-left: auto; margin-right: auto; display: block;"/>
+            </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
 </template>
 
 <script>
@@ -183,8 +173,13 @@ import { useQuasar, QSpinnerGears } from 'quasar'
 import { defineComponent, ref, onMounted, onUnmounted, reactive, computed, watch } from 'vue';
 import { useStore } from 'vuex'
 
+import HistoryDetailsComp from 'src/components/Records/PatientHistory/HistoryDetailsComp.vue'
+
 export default defineComponent({
     name: 'PatientHistory',
+    components: {
+        HistoryDetailsComp,
+    },
     props: {
         propSelected: Object
     },
@@ -193,14 +188,11 @@ export default defineComponent({
         const $store = useStore()
         const $q = useQuasar()
 
-        const windowSize = ref(null)
-        const avatarSize = ref(null)
-        const display = ref(null)
-        const onFileChange = ref(null)
-        //image
-        const imageDisplay = ref(null)
-        //chip
-        const gingerbread = ref(true)
+        //history
+        const historyDate = ref(null)
+        const historyfiles = ref(null)
+        const reviewImage = ref(null)
+        const historyImg = ref(null)
         //symptom
         const symptomsDescription = ref(null)
         const symptomOption = ref(null)
@@ -214,25 +206,7 @@ export default defineComponent({
         const diagnosisRepeater = reactive([])
         //props
         const selectedPatient = computed(() => props.propSelected)
-        const selectedPatientAge = computed(() => {
-            if(selectedPatient.value) {
-                /**
-                 * Age Calculation
-                 * Author: naveen
-                 * Url: https://stackoverflow.com/a/7091965/3362771
-                 */
 
-                let date = new Date()
-                let birthdate = new Date(selectedPatient.value.birthdate)
-                let age = date.getFullYear() - birthdate.getFullYear()
-                let mm = date.getMonth() - birthdate.getMonth()
-                if(mm < 0 || (mm === 0 && date.getDate() < birthdate.getDate())) {
-                    age--
-                }
-                return age
-            }
-            return ''
-        })
         const isDisabled = computed(() => {
             if(!selectedPatient.value) {
                 return true
@@ -244,26 +218,14 @@ export default defineComponent({
             //clear array when no patient selected
             symptomsRepeater.splice(0)
             diagnosisRepeater.splice(0)
+            historyDate.value = null
+            historyfiles.value = null
         })
 
-        const getSize = () => {
-            windowSize.value = window.innerWidth
-            if(window.innerWidth <= 500) {
-                avatarSize.value = (500 * 0.60)
-            } else if(window.innerWidth >= 500) {
-                avatarSize.value = (window.innerWidth * 0.40)
-            }
-            
-            //hide div
-            if(window.innerWidth < 1025) {
-                display.value = "none"
-            } else {
-                display.value = "block"
-            }
+        const onUploadFile = (e) => {
+            const file = e.target.files[0]
+            historyImg.value = URL.createObjectURL(file)
         }
-        
-        onMounted(() => { getSize(),window.addEventListener('resize', getSize) })
-        onUnmounted(() => { window.removeEventListener('resize', getSize) })
 
         const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
         const abortFilterFn = () => { console.log('delayed filter aborted') }
@@ -298,27 +260,18 @@ export default defineComponent({
             })
             .catch((err) => {
                 notify()
-                $q.notify({
-                color: 'red-5',
-                textColor: 'white',
-                position: 'center',
-                type: 'negative',
-                message: 'Something went wrong.',
-                timeout: 3000
+                    $q.notify({
+                    color: 'red-5',
+                    textColor: 'white',
+                    position: 'center',
+                    type: 'negative',
+                    message: 'Something went wrong.',
+                    timeout: 3000
                 })
             })
         }
         
         return { 
-            //window Size
-            avatarSize,
-            windowSize,
-            //chip
-            gingerbread,
-            //fileupload
-            onFileChange,
-            //image
-            imageDisplay,
             //symptom repeater
             addSymptom,
             symptomsRepeater,
@@ -331,12 +284,13 @@ export default defineComponent({
             symptomsDescription,
             symptomDate,
             symptomOption,
-            //diagnosis
-
-
+            //history
+            historyDate,
+            reviewImage,
+            onUploadFile,
+            historyImg,
             //props
             selectedPatient,
-            selectedPatientAge,
 
             //submit
             isDisabled,
@@ -345,20 +299,14 @@ export default defineComponent({
             model: ref(null),
             options,
             abortFilterFn,
-            display,
             
+            //history fileupload
+            historyfiles,
+            counterLabelFn ({ totalSize, filesNumber, maxFiles }) {
+                return `${filesNumber} files of ${maxFiles} | ${totalSize}`
+            }
         }
     }
 })
 </script>
 
-<style scoped>
-.div-separator {
-    display: block;
-}
-
-.review-button:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
-</style>
