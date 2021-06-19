@@ -75,7 +75,7 @@
                         <q-card-section>
                             <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" :disable="isDisabled" />
                         </q-card-section>
-                        <div class="symptoms-container" v-if="symptomsRepeater.length">
+                        <div v-if="symptomsRepeater.length">
                             <div v-for="(symp,index) in symptomsRepeater" :key="symp.name">
                                 <q-card-section class="q-mb-md">
                                     <!-- Delete button -->
@@ -117,7 +117,7 @@
                         <q-card-section>
                             <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" :disable="isDisabled" />
                         </q-card-section>
-                        <div class="diagnosis-container" v-if="diagnosisRepeater.length">
+                        <div v-if="diagnosisRepeater.length">
                             <div v-for="(diag,index) in diagnosisRepeater" :key="diag.name">
                                 <q-card-section class="q-mb-md">
                                     <!-- Delete button -->
@@ -155,8 +155,7 @@
                             </div>
                         </div>
                         <div class="q-my-lg row">
-                            <div class="col">
-                            </div>
+                            <div class="col"></div>
                             <div class="col-auto q-mr-lg review-button" v-if="true">
                                 Review
                             </div>
@@ -179,7 +178,6 @@
 </template>
 
 <script>
-import { useQuasar, QSpinnerGears } from 'quasar'
 import { defineComponent, ref, onMounted, onUnmounted, reactive, computed, watch } from 'vue';
 import { useStore } from 'vuex'
 
@@ -189,10 +187,7 @@ export default defineComponent({
         propSelected: Object
     },
     setup(props) {
-
         const $store = useStore()
-        const $q = useQuasar()
-
         const windowSize = ref(null)
         const avatarSize = ref(null)
         const display = ref(null)
@@ -276,37 +271,7 @@ export default defineComponent({
 
         //send data to server
         const sendData = () => {
-            const notify = $q.notify({
-                spinner: QSpinnerGears,
-                message: 'Submitting details',
-                position: 'center',
-                timeout: 0
-            })
             $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater})
-            .then((res) => {
-                notify()
-                $q.notify({
-                    color: 'green-5',
-                    textColor: 'white',
-                    position: 'center',
-                    type: 'positive',
-                    message: 'Details submitted.',
-                    timeout: 3000
-                })
-                symptomsRepeater.length = 0
-                diagnosisRepeater.length = 0
-            })
-            .catch((err) => {
-                notify()
-                $q.notify({
-                color: 'red-5',
-                textColor: 'white',
-                position: 'center',
-                type: 'negative',
-                message: 'Something went wrong.',
-                timeout: 3000
-                })
-            })
         }
         
         return { 
