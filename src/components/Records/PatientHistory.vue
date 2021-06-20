@@ -11,7 +11,6 @@
                 <HistoryDetailsComp :propPatSelected="selectedPatient" />
 
                 <q-card-section class="col-xs-12 col-sm-12 col-md-5 text-center">
-                    <!-- <img src="https://cdn.quasar.dev/img/mountains.jpg"> -->
                     <div class="q-pt-lg">
                         <q-card-section>
                             <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" :disable="isDisabled" />
@@ -22,7 +21,22 @@
                                     <!-- Delete button -->
                                     <q-btn @click="removeSymptom(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
-                                        <q-select use-input hide-selected fill-input class="col-grow q-ma-sm" input-debounce="500" label="Symptoms" label-color="blue" color="blue" :options="options" @filter-abort="abortFilterFn" v-model="symp.name">
+                                        <!-- Symptoms Dropdown -->
+                                        <q-select 
+                                            use-input 
+                                            hide-selected 
+                                            fill-input 
+                                            class="col-grow q-ma-sm" 
+                                            input-debounce="300" 
+                                            label="Symptoms"
+                                            label-color="blue" 
+                                            color="blue" 
+                                            transition-show="scale" 
+                                            transition-hide="scale" 
+                                            :options="filterOptionsSymp"
+                                            v-model="symp.name"
+                                            @new-value="createSympValue"
+                                            @filter="sympfilterFn">
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
@@ -64,7 +78,30 @@
                                     <!-- Delete button -->
                                     <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
-                                        <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange" label="Diagnosis" color="orange" :options="options" @filter-abort="abortFilterFn" class="col-grow q-ma-sm">
+                                        <!-- <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange"  label="Diagnosis" color="orange" :options="options" transition-show="scale" transition-hide="scale" class="col-grow q-ma-sm">
+                                            <template v-slot:no-option>
+                                                <q-item>
+                                                    <q-item-section class="text-grey">
+                                                        No results
+                                                    </q-item-section>
+                                                </q-item>
+                                            </template>
+                                        </q-select> -->
+                                        <q-select 
+                                            use-input 
+                                            hide-selected 
+                                            fill-input 
+                                            class="col-grow q-ma-sm" 
+                                            input-debounce="300" 
+                                            label="Diagnosis"
+                                            label-color="orange" 
+                                            color="orange" 
+                                            transition-show="scale" 
+                                            transition-hide="scale" 
+                                            :options="filterOptionDiag"
+                                            v-model="diag.name"
+                                            @new-value="createDiagValue"
+                                            @filter="diagfilterFn">
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
@@ -197,6 +234,7 @@ export default defineComponent({
         const symptomsDescription = ref(null)
         const symptomOption = ref(null)
         const symptomDate = ref(null)
+        //symptoms dropdown
         //diagnosis
         const diagnosisDescription = ref(null)
         const diagnosisOption = ref(null)
@@ -226,9 +264,6 @@ export default defineComponent({
             const file = e.target.files[0]
             historyImg.value = URL.createObjectURL(file)
         }
-
-        const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
-        const abortFilterFn = () => { console.log('delayed filter aborted') }
 
         //symptom repeater
         const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'occured_on': symptomDate.value}); }
@@ -270,7 +305,31 @@ export default defineComponent({
                 })
             })
         }
-        
+
+        let optionsSymp = []
+        let optionsDiag = []
+        const filterOptionsSymp = ref(optionsSymp)
+        const filterOptionDiag = ref(optionsDiag)
+
+        onMounted(() => {
+            const loadSymptoms = async () => {
+                const result = await $store.dispatch('patient/requestSymptomsDropdown')
+                optionsSymp.length = 0;
+                result.data.forEach(result => {
+                    optionsSymp.push(result.name)
+                });
+            }
+            const loadDiagnoses = async () => {
+                const result = await $store.dispatch('patient/requestDiagnosesDropdown')
+                optionsDiag.length = 0;
+                result.data.forEach(result => {
+                    optionsDiag.push(result.name)
+                });
+            }
+            loadSymptoms()
+            loadDiagnoses()
+        })
+
         return { 
             //symptom repeater
             addSymptom,
@@ -291,15 +350,50 @@ export default defineComponent({
             historyImg,
             //props
             selectedPatient,
-
             //submit
             isDisabled,
             sendData,
-
-            model: ref(null),
-            options,
-            abortFilterFn,
             
+            //symptoms dropdown
+            filterOptionsSymp,
+            createSympValue(val, done) {
+                if(val.length >= 2) {
+                    if(!optionsSymp.includes(val)){
+                        done(val, 'add-unique')
+                    }
+                }
+            },
+            sympfilterFn (val, update) {
+                update(() => {
+                    if(val === '') {
+                        filterOptionsSymp.value = optionsSymp
+                    }
+                    else {
+                        const needle = val.toLowerCase()
+                        filterOptionsSymp.value = optionsSymp.filter( v => v.toLowerCase().indexOf(needle) > -1)
+                    }
+                })
+            },
+            //Diagnosis Dropdown
+            filterOptionDiag,
+            createDiagValue(val, done) {
+                if(val.length >= 2) {
+                    if(!optionsDiag.includes(val)){
+                        done(val, 'add-unique')
+                    }
+                }
+            },
+            diagfilterFn (val, update) {
+                update(() => {
+                    if(val === '') {
+                        filterOptionDiag.value = optionsDiag
+                    }
+                    else {
+                        const needle = val.toLowerCase()
+                        filterOptionDiag.value = optionsDiag.filter( v => v.toLowerCase().indexOf(needle) > -1)
+                    }
+                })
+            },
             //history fileupload
             historyfiles,
             counterLabelFn ({ totalSize, filesNumber, maxFiles }) {

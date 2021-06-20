@@ -39,10 +39,12 @@ export async function requestPatientTable (context, payload) {
     // console.log('/patient?'+url)
     return await api.get('/patient?'+url);
 }
-export async function requestSymptomsList (context, payload) {
-    // return await api.get('/')
+export async function requestSymptomsDropdown () {
+    return await api.get('/patient/history/symptoms/dropdown')
 }
-
+export async function requestDiagnosesDropdown () {
+    return await api.get('/patient/history/diagnoses/dropdown')
+}
 export async function sendHistorySymptomDiagnosis(context, payload) {
     const patient_id = payload.selectedPatient.value.id
     let symptomsRepeater = payload.symptomsRepeater
