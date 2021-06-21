@@ -70,7 +70,7 @@ export default defineComponent({
 
     const data = computed(() => {
       if(confirmModal.value){
-        let a = _.cloneDeep($store.getters['patient/get'])
+        let a = _.cloneDeep($store.getters['patient/getPatient'])
         const city = phil.city_mun.filter(item => item.mun_code == a.address.city)
         const province = phil.provinces.filter(item => item.prov_code == a.address.province)
         const barangay = phil.barangays.filter(item => item.brgy_code == a.address.barangay)
@@ -107,17 +107,18 @@ export default defineComponent({
         })
         setTimeout(() => {
           $store.dispatch('patient/setButtonDisabled', false)
-          window.location.reload()
+          // window.location.reload()
         }, 3000)
       })
       .catch((err) => {
         notify()
+        $store.dispatch('patient/setButtonDisabled', false)
         $q.notify({
           color: 'red-5',
           textColor: 'white',
           position: 'center',
           type: 'negative',
-          message: 'Something went wrong.',
+          message: 'Something went wrong. Message:'+ err,
           timeout: 3000
         })
       })
