@@ -20,11 +20,11 @@
             </q-carousel-control>
           </template>
       </q-carousel> -->
-      <q-responsive :ratio="1" class="col">
         <q-card class="column">
-          <q-carousel-slide name="first" :img-src="img" />
+          <div style="text-align: center;">
+            <img :src="img" style="width: auto; height: 300px; object-fit: cover;" />
+          </div>
         </q-card>
-      </q-responsive>
     </div>
     <div v-else style="text-align:center"> 
       <h1> ID Picture </h1>
