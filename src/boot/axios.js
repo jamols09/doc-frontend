@@ -11,7 +11,10 @@ const liveURL = ""
 const demoURL = 'http://api.docmaglana.test'
 const api = axios.create({ 
   baseURL: demoURL,
-  headers: {'Content-Type': 'application/json'},
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
   withCredentials: true
 })
 

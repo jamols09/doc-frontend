@@ -1,11 +1,12 @@
 <template>
   <q-card-section class="col-xs-12 col-sm-12 col-md-6 text-center">
-        <q-avatar size="223px">
+        <q-avatar size="203px">
             <img src="https://cdn.quasar.dev/img/mountains.jpg">
         </q-avatar>
         <q-card-section v-if="propPatSelected">
             <div class="text-h6"> &nbsp;&nbsp; {{ propPatSelected.firstname }} {{ propPatSelected.middlename }} {{ propPatSelected.lastname }}  &nbsp;&nbsp; </div>
             <div class="text-subtitle2">Age: {{ selectedPatientAge }} | windowSize: {{ windowSize }} </div>
+            <div class="text-subtitle2">Address: </div>
         </q-card-section>
         <q-card-section class="row justify-center" v-if="propPatSelected">
             <div class="col-sm-6">

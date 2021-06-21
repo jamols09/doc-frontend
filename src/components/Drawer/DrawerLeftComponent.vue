@@ -2,7 +2,7 @@
     <div>
     <!-- drawer Content Title -->
       <q-item-label header class="text-white bg-primary">
-        Pages
+        
       </q-item-label>
 
       <div v-if="list">
@@ -46,6 +46,7 @@ export default {
           { name: 'Home', url: '/' },
           { name: 'Patient', url: '/patients' },
           { name: 'Records', url: '/records' },
+          { name: 'Prescription', url: '/prescription' },
           { name: 'Settings', url: '/settings' },
         ]
       },

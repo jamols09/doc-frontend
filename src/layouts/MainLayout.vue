@@ -11,7 +11,7 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/" label="Home" />
+        <!-- <q-route-tab to="/" label="Home" /> -->
       </q-tabs>
     </q-header>
 

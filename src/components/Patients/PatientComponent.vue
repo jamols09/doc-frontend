@@ -197,7 +197,7 @@ export default defineComponent({
 
   components: { PatientModal },
   
-  setup(props) {
+  setup() {
     
     const patient = reactive({
       firstname: '',
@@ -227,6 +227,7 @@ export default defineComponent({
       },
       telephone: '',
       mobile: '',
+      avatar: '',
     });
 
     const $store = useStore()
@@ -242,11 +243,11 @@ export default defineComponent({
     
     const isDisabled = computed(() => $store.getters['patient/getsubmitButton'])
 
-    onMounted(( ) => {
+    onMounted(() => {
       region.value = phil.regions
       $store.dispatch('patient/setButtonDisabled', false) //enable submit button
     })
-    watchEffect( () => {
+    watchEffect(() => {
       province.value = phil.getProvincesByRegion(patient.address.region)
       city.value = phil.getCityMunByProvince(patient.address.province)
       barangay.value = phil.getBarangayByMun(patient.address.city)
