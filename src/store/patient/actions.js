@@ -19,26 +19,21 @@ export async function sendPatientInfo ({}, payload) {
     const avatar = this.getters['patient/getPatientAvatar']
 
     await axios.get('http://api.docmaglana.test/sanctum/csrf-cookie')
-    let pid = await api.post('/patient', pdata)
+    const pid = await api.post('/patient', pdata)
     
-    console.log(avatar)
     if(avatar) {  
         const file = DataURIToBlob(avatar)
         const form = new FormData()
         //generate file name as time
-        var d = new Date();
-        var n = d.getTime();
+        let d = new Date();
+        let n = d.getTime();
         form.append('avatar', file, n.toString())
-        console.log(pid.data.id)
         form.append('id', JSON.stringify(pid.data.id))
 
         const config = {
-            headers: {
-                'content-type': undefined
-            }
+            headers: { 'content-type': undefined }
         }
         
-        console.log("asd")
         await api.post('/patient/avatar', form, config)
     }
 
@@ -69,24 +64,39 @@ export async function requestSymptomsDropdown () {
 export async function requestDiagnosesDropdown () {
     return await api.get('/patient/history/diagnoses/dropdown')
 }
-export async function sendHistorySymptomDiagnosis(context, payload) {
+export async function sendHistorySymptomDiagnosis(context, payload) {  
     const patient_id = payload.selectedPatient.value.id
-    let symptomsRepeater = payload.symptomsRepeater
-    let diagnosisRepeater = payload.diagnosisRepeater
-    let history  = await api.post('/patient/history', { patient_id })   
+    const history = await api.post('/patient/history', { patient_id })
+    const historyFiles = payload.historyfiles
 
+    if(historyFiles) {
+        const form = new FormData()
+        //generate file name as time
+        var d = new Date();
+        var n = d.getTime();
+        form.append('history', historyFiles.value[0], n.toString())
+        form.append('patient_id', JSON.stringify(patient_id))
+        form.append('id', JSON.stringify(history.data.id))
+        const config = {
+            headers: { 'content-type': undefined }
+        }
+        console.log(form)
+        await api.post('/patient/history/file', form, config)
+    }
+
+    const symptomsRepeater = payload.symptomsRepeater
     if(symptomsRepeater.length) {
         symptomsRepeater.forEach(element => {
             element.history_id = history.data.id
         })
-        const symptoms = await api.post('/patient/history/symptoms', symptomsRepeater )
+        await api.post('/patient/history/symptoms', symptomsRepeater )
     }
-
+    const diagnosisRepeater = payload.diagnosisRepeater
     if(diagnosisRepeater.length) {
         diagnosisRepeater.forEach(element => {
             element.history_id = history.data.id
         })
-        const diagnoses = await api.post('/patient/history/diagnoses', diagnosisRepeater )
+        await api.post('/patient/history/diagnoses', diagnosisRepeater )
     }
 }
 

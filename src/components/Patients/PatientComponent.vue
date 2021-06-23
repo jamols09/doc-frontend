@@ -23,7 +23,7 @@
           <q-select v-model="patient.sex" :options="sex" label="Sex" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-select v-model="patient.status" :options="status" label="Status" transition-show="jump-up" transition-hide="jump-up"  />
+          <q-select v-model="patient.status" :options="status" label="Status" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
           <q-input v-model="patient.occupation" filled hint="Occupation (ie: Student)" clearable />
@@ -227,7 +227,6 @@ export default defineComponent({
       },
       telephone: '',
       mobile: '',
-      avatar: '',
     });
 
     const $store = useStore()
