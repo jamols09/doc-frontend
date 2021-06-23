@@ -279,7 +279,7 @@ export default defineComponent({
                 position: 'center',
                 timeout: 0
             })
-            $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater})
+            $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater,historyfiles})
             .then((res) => {
                 notify()
                 $q.notify({
@@ -294,6 +294,7 @@ export default defineComponent({
                 diagnosisRepeater.length = 0
             })
             .catch((err) => {
+                console.log(err)
                 notify()
                     $q.notify({
                     color: 'red-5',
