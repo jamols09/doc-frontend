@@ -1,5 +1,6 @@
 import { api } from "src/boot/axios"
 import axios from 'axios'
+import { convertUriToBlob, searchFilter } from 'src/helper'
 
 /**
  * @param {send..} to API 
@@ -22,7 +23,7 @@ export async function sendPatientInfo ({}, payload) {
     const pid = await api.post('/patient', pdata)
     
     if(avatar) {  
-        const file = DataURIToBlob(avatar)
+        const file = convertUriToBlob(avatar)
         const form = new FormData()
         //generate file name as time
         let d = new Date();
@@ -39,32 +40,20 @@ export async function sendPatientInfo ({}, payload) {
 
     return pid
 }
-export function setButtonDisabled({ commit }, payload) {
+export function setButtonDisabled ({ commit }, payload) {
     commit('SET_BUTTON_SUBMIT', payload)
 }
 export async function requestPatientTable (context, payload) {
-    const params = Object.entries(payload) //convert object to arrays
-    const size = params.length
-    let i = 1
-    let url = ''
-    for (const [filter, type] of params) { //destructure arrays 
-        // console.log(` filter:${filter} | type:${type}`)
-        if(i < size) {
-            url += filter+'='+ type +'&'
-        } else {
-            url += filter+'='+ type
-        }
-        i++
-    }
+    const url = searchFilter(payload)
     return await api.get('/patient?'+url);
 }
 export async function requestSymptomsDropdown () {
-    return await api.get('/patient/history/symptoms/dropdown')
+    return await api.get('patient/history/symptoms')
 }
 export async function requestDiagnosesDropdown () {
-    return await api.get('/patient/history/diagnoses/dropdown')
+    return await api.get('patient/history/diagnoses')
 }
-export async function sendHistorySymptomDiagnosis(context, payload) {  
+export async function sendHistorySymptomDiagnosis (context, payload) {  
     const patient_id = payload.selectedPatient.value.id
     const history = await api.post('/patient/history', { patient_id })
     const historyFiles = payload.historyfiles
@@ -99,15 +88,9 @@ export async function sendHistorySymptomDiagnosis(context, payload) {
         await api.post('/patient/history/diagnoses', diagnosisRepeater )
     }
 }
-
-// Convert Base64 img to Form data
-function DataURIToBlob(dataUri) {
-    const splitDataURI = dataUri.split(',')
-    const byteString = splitDataURI[0].indexOf('base64') >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1])
-    const mimeString = splitDataURI[0].split(':')[1].split(';')[0]
-
-    const ia = new Uint8Array(byteString.length)
-    for (let i = 0; i < byteString.length; i++)
-        ia[i] = byteString.charCodeAt(i)
-    return new Blob([ia], { type: mimeString })
+export async function requestPatientsSymptoms (context, payload) {
+    return await api.get('/patient/'+payload.id+'/history/symptoms')
+}
+export async function requestPatientDiagnoses (context, payload) {
+    return await api.get('/patient/'+payload.id+'/history/diagnoses')
 }

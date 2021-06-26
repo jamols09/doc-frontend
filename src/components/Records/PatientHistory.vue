@@ -40,7 +40,7 @@
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
-                                                        No results
+                                                        No results (Press enter to save new)
                                                     </q-item-section>
                                                 </q-item>
                                             </template>
@@ -105,7 +105,7 @@
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
-                                                        No results
+                                                        No results (Press enter to save new)
                                                     </q-item-section>
                                                 </q-item>
                                             </template>
@@ -207,7 +207,7 @@
 
 <script>
 import { useQuasar, QSpinnerGears } from 'quasar'
-import { defineComponent, ref, onMounted, onUnmounted, reactive, computed, watch } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 
 import HistoryDetailsComp from 'src/components/Records/PatientHistory/HistoryDetailsComp.vue'
