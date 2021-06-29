@@ -1,5 +1,5 @@
 <template>
-  <q-card-section class="col-xs-12 col-sm-12 col-md-6 text-center">
+    <q-card-section class="col-xs-12 col-sm-12 col-md-6 text-center">
         <q-avatar size="203px" v-if="avatarFilePath">
             <img :src="avatarFilePath">
         </q-avatar>
@@ -19,6 +19,10 @@
                 <DiagnosisQChip :patientQChip="propPatSelected" />
             </div>
         </q-card-section>
+        
+        <q-card-section class="row" v-if="avatarFilePath">
+            <HistoryFile :historyFile="propPatSelected" />
+        </q-card-section>
     </q-card-section>
 
     <q-card-section class="div-separator" :style="'display:' +display+ ';'" ></q-card-section>
@@ -28,10 +32,11 @@
 </template>
 
 <script>
+import { calculateAge } from 'src/helper'
 import { defineComponent, computed, onMounted, onUnmounted, ref } from 'vue'
 import SymptomsQChip from 'src/components/Records/PatientHistory/SymptomsQChip/SymptomsQChip.vue'
 import DiagnosisQChip from 'src/components/Records/PatientHistory/DiagnosisQChip/DiagnosisQChip.vue'
-import { calculateAge } from 'src/helper'
+import HistoryFile from 'src/components/Records/PatientHistory/HistoryFile/HistoryFile.vue'
 
 export default defineComponent({
     name: 'HistoryDetailsComp',
@@ -41,6 +46,7 @@ export default defineComponent({
     components: {
         SymptomsQChip,
         DiagnosisQChip,
+        HistoryFile
     },
     setup(props) {
         

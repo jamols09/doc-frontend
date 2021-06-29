@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh LpR fFf">
+  <q-layout view="hHh Lpr fFf">
 
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
@@ -7,7 +7,7 @@
         <q-toolbar-title>
           Admin Dashboard
         </q-toolbar-title>
-        <q-btn  dense flat round icon="menu" @click="right = !right" />
+        <!-- <q-btn  dense flat round icon="menu" @click="right = !right" /> -->
       </q-toolbar>
 
       <q-tabs align="left">
@@ -27,7 +27,7 @@
       <DrawerLeftComponent :titleProp="path" />
     </q-drawer>
     <!-- Right Drawer Component -->
-    <q-drawer
+    <!-- <q-drawer
       bordered
       class="drawer-o-90"
       side="right"
@@ -37,7 +37,7 @@
       overlay
     >
       <DrawerRightComponent />
-    </q-drawer>
+    </q-drawer> -->
 
     <q-page-container 
       class="auth-bg"
@@ -75,7 +75,7 @@ export default {
 
   components: {
     DrawerLeftComponent,
-    DrawerRightComponent
+    //DrawerRightComponent
   },
 
   setup() {

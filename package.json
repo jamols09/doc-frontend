@@ -14,13 +14,16 @@
     "@capacitor/core": "^3.0.0",
     "@ionic/pwa-elements": "^3.0.2",
     "@quasar/extras": "^1.0.0",
+    "aws-sdk": "^2.935.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "dotenv": "^10.0.0",
     "lodash": "^4.17.21",
     "particles.vue": "^2.10.0",
     "particles.vue3": "^1.10.0",
     "philippine-location-json-for-geer": "^1.1.11",
     "quasar": "^2.0.0-beta.1",
+    "util": "^0.12.4",
     "vuelidate": "^0.7.6"
   },
   "devDependencies": {

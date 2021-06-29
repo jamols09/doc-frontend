@@ -28,7 +28,7 @@ See [Configuring quasar.conf.js](https://v2.quasar.dev/quasar-cli/quasar-conf-js
 (PWA PLUGIN) https://capacitorjs.com/docs/web/pwa-elements
 lodash - make reactive elements watchable
 vuelidate - validation plugin
-
+dotenv - using env for quasar
 ```
 
 ## About DocMaglana
