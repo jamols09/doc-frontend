@@ -78,15 +78,6 @@
                                     <!-- Delete button -->
                                     <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
-                                        <!-- <q-select v-model="diag.name" use-input hide-selected fill-input input-debounce="500" label-color="orange"  label="Diagnosis" color="orange" :options="options" transition-show="scale" transition-hide="scale" class="col-grow q-ma-sm">
-                                            <template v-slot:no-option>
-                                                <q-item>
-                                                    <q-item-section class="text-grey">
-                                                        No results
-                                                    </q-item-section>
-                                                </q-item>
-                                            </template>
-                                        </q-select> -->
                                         <q-select 
                                             use-input 
                                             hide-selected 
@@ -294,14 +285,13 @@ export default defineComponent({
                 diagnosisRepeater.length = 0
             })
             .catch((err) => {
-                console.log(err)
                 notify()
                     $q.notify({
                     color: 'red-5',
                     textColor: 'white',
                     position: 'center',
                     type: 'negative',
-                    message: 'Something went wrong.',
+                    message: 'Something went wrong. ' + err,
                     timeout: 3000
                 })
             })

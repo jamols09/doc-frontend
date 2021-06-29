@@ -1,12 +1,11 @@
 <template>
 <div v-if="symptomsChip">
-    <!-- {{ symptomsChip }}
-    {{ selectedPatient }} -->
     <div v-for="(arry, index) in symptomsChip" :key="index">
-        <q-chip removable size="12px" color="blue" text-color="white" icon="sick"  v-for="chip in arry" :key="chip.id">
+        <q-chip removable size="14px" color="blue" text-color="white" icon="sick"  v-for="chip in arry" :key="chip.id">
             {{ chip.name }}
-             <q-tooltip class="bg-info text-black shadow-4" transition-show="scale" transition-hide="scale" v-if="chip.description">
-                {{ chip.description }}
+             <q-tooltip class="bg-info text-black shadow-4" transition-show="scale" transition-hide="scale" >
+                <span v-if="chip.description">{{ chip.description }}. Occured on <b>{{ chip.occured_on }}</b></span>
+                <span v-else> No description. Occured On <b>{{ chip.occured_on }}</b> </span>
             </q-tooltip>
         </q-chip>
     </div>
@@ -18,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref, watchEffect } from "vue";
+import { defineComponent, ref, watchEffect } from "vue";
 import { useStore } from 'vuex'
 import { groupDataByPropertyValue } from 'src/helper'
 
@@ -40,7 +39,7 @@ export default defineComponent({
             symptomsChip.value = groupDataByPropertyValue('history_id', data)
         }
 
-        watchEffect( async () => {
+        watchEffect(() => {
             selectedPatient.value = props.patientQChip
             getPatientSymptoms(selectedPatient.value.id)
         })

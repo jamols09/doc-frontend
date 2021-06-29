@@ -57,8 +57,8 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
     const patient_id = payload.selectedPatient.value.id
     const history = await api.post('/patient/history', { patient_id })
     const historyFiles = payload.historyfiles
-
-    if(historyFiles) {
+    
+    if(historyFiles.value) {
         const form = new FormData()
         //generate file name as time
         var d = new Date();
@@ -69,18 +69,19 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
         const config = {
             headers: { 'content-type': undefined }
         }
-        console.log(form)
         await api.post('/patient/history/file', form, config)
     }
 
-    const symptomsRepeater = payload.symptomsRepeater
+    let symptomsRepeater = payload.symptomsRepeater
+    console.log('symptomsRepeater ', symptomsRepeater)
     if(symptomsRepeater.length) {
         symptomsRepeater.forEach(element => {
             element.history_id = history.data.id
         })
         await api.post('/patient/history/symptoms', symptomsRepeater )
     }
-    const diagnosisRepeater = payload.diagnosisRepeater
+    let diagnosisRepeater = payload.diagnosisRepeater
+    console.log('diagnosisrepeater ',diagnosisRepeater)
     if(diagnosisRepeater.length) {
         diagnosisRepeater.forEach(element => {
             element.history_id = history.data.id
@@ -88,9 +89,16 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
         await api.post('/patient/history/diagnoses', diagnosisRepeater )
     }
 }
+
+//SymptomsQChip
 export async function requestPatientsSymptoms (context, payload) {
-    return await api.get('/patient/'+payload.id+'/history/symptoms')
+    return await api.get('/patient/'+ payload.id +'/history/symptoms')
 }
+//DiagnosisQChip
 export async function requestPatientDiagnoses (context, payload) {
-    return await api.get('/patient/'+payload.id+'/history/diagnoses')
+    return await api.get('/patient/'+ payload.id +'/history/diagnoses')
+}
+//PatientFiles
+export async function requestPatientFiles (context, payload) {
+    return await api.get('/patient/'+ payload.id +'/history/files')
 }
