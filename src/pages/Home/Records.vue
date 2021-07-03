@@ -1,12 +1,9 @@
 <template>
-  <q-page class="q-pa-sm">
+<q-page class="q-pa-sm">
     <div class="q-pa-sm">
       <PatientRecordTable @sendSelected="selected" />
     </div>
     <div class="row">
-      <!-- <div class="q-pa-sm col-xs-12 col-md-6">
-        <PatientInfo />
-      </div> -->
       <div class="q-pa-sm col-xs-12 col-md-12">
         <PatientHistory :propSelected="propSelected"/>
       </div>
