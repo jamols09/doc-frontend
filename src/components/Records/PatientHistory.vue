@@ -251,6 +251,30 @@ export default defineComponent({
             historyfiles.value = null
         })
 
+        let optionsSymp = []
+        let optionsDiag = []
+        const filterOptionsSymp = ref(optionsSymp)
+        const filterOptionDiag = ref(optionsDiag)
+
+        onMounted(() => {
+            const loadSymptoms = async () => {
+                const result = await $store.dispatch('patient/requestSymptomsDropdown')
+                optionsSymp.length = 0;
+                result.data.forEach(result => {
+                    optionsSymp.push(result.name)
+                });
+            }
+            const loadDiagnoses = async () => {
+                const result = await $store.dispatch('patient/requestDiagnosesDropdown')
+                optionsDiag.length = 0;
+                result.data.forEach(result => {
+                    optionsDiag.push(result.name)
+                });
+            }
+            loadSymptoms()
+            loadDiagnoses()
+        })
+
         const onUploadFile = (e) => {
             const file = e.target.files[0]
             historyImg.value = URL.createObjectURL(file)
@@ -270,7 +294,7 @@ export default defineComponent({
                 position: 'center',
                 timeout: 0
             })
-            $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater,historyfiles})
+            $store.dispatch('patient/sendHistorySymptomDiagnosis', {selectedPatient,symptomsRepeater,diagnosisRepeater,historyfiles,historyDate})
             .then((res) => {
                 notify()
                 $q.notify({
@@ -296,30 +320,6 @@ export default defineComponent({
                 })
             })
         }
-
-        let optionsSymp = []
-        let optionsDiag = []
-        const filterOptionsSymp = ref(optionsSymp)
-        const filterOptionDiag = ref(optionsDiag)
-
-        onMounted(() => {
-            const loadSymptoms = async () => {
-                const result = await $store.dispatch('patient/requestSymptomsDropdown')
-                optionsSymp.length = 0;
-                result.data.forEach(result => {
-                    optionsSymp.push(result.name)
-                });
-            }
-            const loadDiagnoses = async () => {
-                const result = await $store.dispatch('patient/requestDiagnosesDropdown')
-                optionsDiag.length = 0;
-                result.data.forEach(result => {
-                    optionsDiag.push(result.name)
-                });
-            }
-            loadSymptoms()
-            loadDiagnoses()
-        })
 
         return { 
             //symptom repeater
