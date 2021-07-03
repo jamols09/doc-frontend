@@ -57,7 +57,8 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
     const patient_id = payload.selectedPatient.value.id
     const history = await api.post('/patient/history', { patient_id })
     const historyFiles = payload.historyfiles
-    
+    const historyDate = payload.historyDate
+
     if(historyFiles.value) {
         const form = new FormData()
         //generate file name as time
@@ -65,6 +66,7 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
         var n = d.getTime();
         form.append('history', historyFiles.value[0], n.toString())
         form.append('patient_id', JSON.stringify(patient_id))
+        form.append('history_date', historyDate.value)
         form.append('id', JSON.stringify(history.data.id))
         const config = {
             headers: { 'content-type': undefined }
@@ -81,7 +83,6 @@ export async function sendHistorySymptomDiagnosis (context, payload) {
         await api.post('/patient/history/symptoms', symptomsRepeater )
     }
     let diagnosisRepeater = payload.diagnosisRepeater
-    console.log('diagnosisrepeater ',diagnosisRepeater)
     if(diagnosisRepeater.length) {
         diagnosisRepeater.forEach(element => {
             element.history_id = history.data.id
