@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 
 import module from './module'
 import patient from './patient'
+import prescription from './prescription'
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -16,7 +17,8 @@ export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
       module,
-      patient
+      patient,
+      prescription,
     },
 
     // enable strict mode (adds overhead!)

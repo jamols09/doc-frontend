@@ -1,7 +1,7 @@
 <template>
     <div class="col-sm-6 col-xs-12">
-        <q-list dense bordered padding class="rounded-borders" v-if="!isEmpty">
-            <q-item clickable v-ripple v-for="file in itemFiles" :key="file.id" @click="getFile(file.file)">
+        <q-list dense bordered padding class="rounded-borders" v-if="!isEmpty" style="max-height: 200px; overflow-y: scroll;">
+            <q-item clickable v-ripple v-for="file in itemFiles" :key="file.id" @click="getFile(file.file)" >
                 <q-item-section avatar>
                     <q-icon color="primary" name="file_download" />
                 </q-item-section>

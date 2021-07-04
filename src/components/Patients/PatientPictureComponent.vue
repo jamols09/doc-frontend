@@ -20,23 +20,25 @@
             </q-carousel-control>
           </template>
       </q-carousel> -->
-        <q-card class="column">
-          <div style="text-align: center;">
-            <img :src="img" style="width: auto; height: 300px; object-fit: cover;" />
-          </div>
-        </q-card>
+      <q-card class="column">
+        <div style="text-align: center;">
+          <img :src="img" style="width: auto; height: 300px; object-fit: cover;" />
+        </div>
+      </q-card>
     </div>
+
     <div v-else style="text-align:center"> 
       <h1> ID Picture </h1>
     </div>
 
-    <q-card-section class="q-my-lg column items-center">
+    <q-card-section class="q-my-sm column items-center">
       <div class="col"></div>
         <div class="col">
           <q-btn color="primary" label="Take Picture" @click="captureImage" />
         </div>
       <div class="col"></div>
     </q-card-section>
+    
   </q-card>
 </template>
 
