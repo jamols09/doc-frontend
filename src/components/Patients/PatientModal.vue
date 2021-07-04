@@ -8,32 +8,32 @@
         <q-card-section class="q-pa-lg q-px-sm">
           <q-field label="Full Name" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0"> {{ data.firstname }} {{ data.middlename }} {{ data.lastname }} </div>
+              <div class="self-center full-width no-outline"> {{ data.firstname }} {{ data.middlename }} {{ data.lastname }} </div>
             </template>
           </q-field>
           <q-field label="Birthdate" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">{{ data.birthdate }}</div>
+              <div class="self-center full-width no-outline">{{ data.birthdate }}</div>
             </template>
           </q-field>
           <q-field label="Province" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">{{ data.address.province }}</div>
+              <div class="self-center full-width no-outline">{{ data.address.province }}</div>
             </template>
           </q-field>
           <q-field label="City" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">{{ data.address.city }}</div>
+              <div class="self-center full-width no-outline">{{ data.address.city }}</div>
             </template>
           </q-field>
           <q-field label="Barangay" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">{{ data.address.barangay }}</div>
+              <div class="self-center full-width no-outline">{{ data.address.barangay }}</div>
             </template>
           </q-field>
           <q-field label="Address line 1" stack-label class="col-grow">
             <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">{{ data.address.line1 }}</div>
+              <div class="self-center full-width no-outline">{{ data.address.line1 }}</div>
             </template>
           </q-field>
           <div v-if="!data.avatar" class="q-pa-lg text-center">

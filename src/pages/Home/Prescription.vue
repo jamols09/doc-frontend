@@ -1,25 +1,20 @@
 <template>
-<q-page class="q-pa-sm">
-    <div class="q-pa-sm">
-        <PrescriptionComp />
-    </div>
-  </q-page>
+    <q-page class="wrap gutter row">
+        <div class="q-pa-sm col-xs-12 col-md-6">
+            <PrescriptionFieldsComp />
+        </div>
+    </q-page>
 </template>
 
 <script>
-import PrescriptionComp from 'src/components/Prescription/PrescriptionComp.vue'
+import PrescriptionFieldsComp from 'src/components/Prescription/PrescriptionFieldsComp.vue'
 import { defineComponent } from 'vue'
 export default defineComponent({
     components: {
-        PrescriptionComp,
+        PrescriptionFieldsComp,
     },
     setup() {
-
-
-
-        return {
-
-        }
+        return {}
     }
 })
 </script>

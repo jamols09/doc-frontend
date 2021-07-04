@@ -15,14 +15,12 @@
 import { defineComponent, ref } from 'vue';
 
 import PatientHistory from 'src/components/Records/PatientHistory'
-import PatientInfo from 'src/components/Records/PatientInfo'
 import PatientRecordTable from 'src/components/Records/PatientRecordTable'
 
 export default defineComponent({
   name: 'Records',
   components: {
     PatientRecordTable,
-    // PatientInfo,
     PatientHistory
   },
   setup() {

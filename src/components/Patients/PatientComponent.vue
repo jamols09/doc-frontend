@@ -20,10 +20,10 @@
           <q-input v-model="patient.birthdate" filled type="date" mask="##/##/####" hint="Birthdate" clearable :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-select v-model="patient.sex" :options="sex" label="Sex" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
+          <q-select filled v-model="patient.sex" :options="sex" label="Sex" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-select v-model="patient.status" :options="status" label="Status" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
+          <q-select filled v-model="patient.status" :options="status" label="Status" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
           <q-input v-model="patient.occupation" filled hint="Occupation (ie: Student)" clearable />
@@ -37,20 +37,20 @@
           <q-input filled v-model="patient.height_inches" type="number" label="Inches" stack-label  maxlength="50"  />
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 q-px-sm q-py-sm">
-          <q-select v-model="patient.height_unit" :options="ht_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
+          <q-select filled v-model="patient.height_unit" :options="ht_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 q-px-sm q-py-sm">
           <q-input filled v-model="patient.weight" type="number" :label="'Unit ('+patient.weight_unit+')'" stack-label  maxlength="50"  />
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 q-px-sm q-py-sm">
-          <q-select v-model="patient.weight_unit" :options="wt_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
+          <q-select filled v-model="patient.weight_unit" :options="wt_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
         </div>
       </q-card-section>
       
       <q-separator inset />
 
       <q-card-section>
-        <div class="text-h6">Address</div>
+        <div class="text-h6 text-dark text-center">Address</div>
       </q-card-section>
       <q-card-section class="q-py-md q-px-sm row">
         <div class="col-xs-12 col-sm-12 col-md-6 q-px-sm q-py-sm">
@@ -133,7 +133,7 @@
       <q-separator inset />
 
       <q-card-section>
-        <div class="text-h6">Contact</div>
+        <div class="text-h6 text-dark text-center">Contact</div>
       </q-card-section>
       <q-card-section class="q-py-md q-px-sm row">
         <div class="col-grow q-px-sm q-py-sm">

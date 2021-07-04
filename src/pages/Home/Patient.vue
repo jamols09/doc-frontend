@@ -1,6 +1,6 @@
 <template>
   <q-page class="wrap gutter row">
-    <div class="q-pa-sm col-xs-12 col-md-6">
+    <div class="q-pa-sm col-xs-12 col-sm-12 col-md-6">
       <PatientComponent />
     </div>
     <div class="q-pa-sm col-xs-12 col-sm-12 col-md-6">

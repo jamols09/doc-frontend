@@ -5,15 +5,12 @@
                 <div class="text-h6 text-dark text-center"> Patient History </div>
             </q-card-section>
             <q-separator />
-
             <div class="q-pa-xs row">
-                
                 <HistoryDetailsComp :propPatSelected="selectedPatient" />
-
                 <q-card-section class="col-xs-12 col-sm-12 col-md-5 text-center">
                     <div class="q-pt-lg">
                         <q-card-section>
-                            <q-btn outline color="primary" @click="addSymptom" label="Add Symptoms" :disable="isDisabled" />
+                            <q-btn color="primary" @click="addSymptom" label="Add Symptoms" :disable="isDisabled" />
                         </q-card-section>
                         <div class="symptoms-container" v-if="symptomsRepeater.length">
                             <div v-for="(symp,index) in symptomsRepeater" :key="symp.name">
@@ -40,7 +37,7 @@
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
-                                                        No results (Press enter to save new)
+                                                        No results (Press enter to save)
                                                     </q-item-section>
                                                 </q-item>
                                             </template>
@@ -62,7 +59,7 @@
                                     </div>
                                     <!-- Textarea -->
                                     <div style="max-width: auto; max-height: 40px;">
-                                        <q-input v-model="symp.description" type="textarea" label="Description" class="q-mx-sm" color="blue" label-color="blue"  autogrow outlined />
+                                        <q-input v-model="symp.description" type="textarea" label="Description" class="q-mx-sm" color="blue" label-color="blue" maxlength="210" autogrow />
                                     </div>
                                 </q-card-section>
                             </div>
@@ -70,7 +67,7 @@
                     </div>
                     <div class="q-pt-lg">
                         <q-card-section>
-                            <q-btn outline color="orange" @click="addDiagnosis" label="Add Diagnosis" :disable="isDisabled" />
+                            <q-btn color="orange" @click="addDiagnosis" label="Add Diagnosis" :disable="isDisabled" />
                         </q-card-section>
                         <div class="diagnosis-container" v-if="diagnosisRepeater.length">
                             <div v-for="(diag,index) in diagnosisRepeater" :key="diag.name">
@@ -78,6 +75,7 @@
                                     <!-- Delete button -->
                                     <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
                                     <div class="row">
+                                        <!-- Diagnosis Dropdown -->
                                         <q-select 
                                             use-input 
                                             hide-selected 
@@ -96,7 +94,7 @@
                                             <template v-slot:no-option>
                                                 <q-item>
                                                     <q-item-section class="text-grey">
-                                                        No results (Press enter to save new)
+                                                        No results (Press enter to save)
                                                     </q-item-section>
                                                 </q-item>
                                             </template>
@@ -118,12 +116,12 @@
                                     </div>
                                     <!-- Textarea -->
                                     <div style="max-width: auto; max-height: 40px;">
-                                        <q-input v-model="diag.description" autogrow outlined label-color="orange" color="orange" type="textarea" label="Description" class="q-mx-sm"/>
+                                        <q-input v-model="diag.description" autogrow label-color="orange" color="orange" type="textarea" maxlength="210" label="Description" class="q-mx-sm"/>
                                     </div>
                                 </q-card-section>
                             </div>
                         </div>
-                        <div class="q-my-lg row">
+                        <div class="q-my-sm row">
                             <div class="q-py-sm col-md-4 col-xs-12" >
                                 <!-- DATE -->
                                 <q-input filled v-model="historyDate" mask="date" :rules="['date']" label="History Date" style="max-width: 300px; display: block; margin: 0 auto;" v-if="historyfiles">
@@ -166,7 +164,7 @@
                         <div class="q-my-lg">
                             <div class="col"></div>
                             <div class="col">
-                                <q-btn outline @click="sendData" label="Submit" type="submit" :disable="isDisabled" color="primary" />
+                                <q-btn @click="sendData" label="Submit" type="submit" :disable="isDisabled" color="primary" />
                             </div>
                             <div class="col"></div>
                         </div>
