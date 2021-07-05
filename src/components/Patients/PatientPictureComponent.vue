@@ -28,13 +28,13 @@
     </div>
 
     <div v-else style="text-align:center"> 
-      <h1> ID Picture </h1>
+      <h3> Photo here </h3>
     </div>
 
     <q-card-section class="q-my-sm column items-center">
       <div class="col"></div>
         <div class="col">
-          <q-btn color="primary" label="Take Picture" @click="captureImage" />
+          <q-btn color="primary" label="Take Photo" @click="captureImage" />
         </div>
       <div class="col"></div>
     </q-card-section>

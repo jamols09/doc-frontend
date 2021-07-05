@@ -17,7 +17,7 @@
                                 <q-card-section class="q-mb-md">
                                     <!-- Delete button -->
                                     <q-btn @click="removeSymptom(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
-                                    <div class="row">
+                                    <div class="q-my-sm row">
                                         <!-- Symptoms Dropdown -->
                                         <q-select 
                                             use-input 
@@ -74,7 +74,7 @@
                                 <q-card-section class="q-mb-md">
                                     <!-- Delete button -->
                                     <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
-                                    <div class="row">
+                                    <div class="q-my-sm row">
                                         <!-- Diagnosis Dropdown -->
                                         <q-select 
                                             use-input 
@@ -279,7 +279,7 @@ export default defineComponent({
         }
 
         //symptom repeater
-        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'occured_on': symptomDate.value}); }
+        const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'occured_on': symptomDate.value}) }
         const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'occured_on': diagnosisDate.value}) }
         const removeDiagnosis = (event) => { diagnosisRepeater.splice(event, 1) }
         const removeSymptom = (event) => { symptomsRepeater.splice(event, 1) }
