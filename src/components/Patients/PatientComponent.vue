@@ -20,30 +20,30 @@
           <q-input v-model="patient.birthdate" filled type="date" mask="##/##/####" hint="Birthdate" clearable :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-select filled v-model="patient.sex" :options="sex" label="Sex" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
+          <q-select filled v-model="patient.sex" :options="sex" label="Sex" stack-label transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-select filled v-model="patient.status" :options="status" label="Status" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
+          <q-select filled v-model="patient.status" :options="status" stack-label label="Status" transition-show="jump-up" transition-hide="jump-up" :rules="[val => !!val || 'Field is required']" />
         </div>
         <div class="col-xs-12 col-sm-6 q-px-sm q-py-sm">
-          <q-input v-model="patient.occupation" filled hint="Occupation (ie: Student)" clearable />
+          <q-input v-model="patient.occupation" filled stack-label label="Occupation (ie: Student)" clearable />
         </div>
       </q-card-section>
       <q-card-section class="q-py-md q-px-sm row">
         <div class="col-xs-4 col-sm-4 col-md-4 q-px-sm q-py-sm">
-          <q-input filled v-model="patient.height" type="number" :label="'Height ('+ patient.height_unit +')'" stack-label  maxlength="50"  />
+          <q-input filled v-model="patient.height"  type="number" :label="'Height ('+ patient.height_unit +')'" stack-label  maxlength="50"  />
         </div>
         <div v-if="patient.height_unit == 'ft' " class="col-xs-4 col-sm-4 col-md-4 q-px-sm q-py-sm">
           <q-input filled v-model="patient.height_inches" type="number" label="Inches" stack-label  maxlength="50"  />
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 q-px-sm q-py-sm">
-          <q-select filled v-model="patient.height_unit" :options="ht_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
+          <q-select filled v-model="patient.height_unit" :options="ht_unit" label="Unit" stack-label transition-show="jump-up" transition-hide="jump-up" />
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 q-px-sm q-py-sm">
           <q-input filled v-model="patient.weight" type="number" :label="'Unit ('+patient.weight_unit+')'" stack-label  maxlength="50"  />
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 q-px-sm q-py-sm">
-          <q-select filled v-model="patient.weight_unit" :options="wt_unit" label="Unit" transition-show="jump-up" transition-hide="jump-up" />
+          <q-select filled v-model="patient.weight_unit" :options="wt_unit" label="Unit" stack-label transition-show="jump-up" transition-hide="jump-up" />
         </div>
       </q-card-section>
       
@@ -141,6 +141,7 @@
           filled 
           v-model="patient.referred_by" 
           label="Referred by" 
+          stack-label
           clearable 
           maxlength="50" />
         </div>
@@ -269,14 +270,12 @@ export default defineComponent({
       }
     )
 
-    const info = computed(() => $store.getters['patient/get'])
     const onSubmit = async () => {
       await $store.dispatch('patient/sendPatientAction', patient)
       modal.value.triggerModal()     
     }
 
     return {
-      info,
       patient,
       sex,
       wt_unit,
