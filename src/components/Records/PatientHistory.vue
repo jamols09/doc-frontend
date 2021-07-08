@@ -278,7 +278,7 @@ export default defineComponent({
             historyImg.value = URL.createObjectURL(file)
         }
 
-        //symptom repeater
+        //repeaters
         const addSymptom = () => { symptomsRepeater.push({'name': symptomOption.value, 'description': symptomsDescription.value, 'occured_on': symptomDate.value}) }
         const addDiagnosis = () => { diagnosisRepeater.push({'name': diagnosisOption.value, 'description' : diagnosisDescription.value, 'occured_on': diagnosisDate.value}) }
         const removeDiagnosis = (event) => { diagnosisRepeater.splice(event, 1) }
