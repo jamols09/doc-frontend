@@ -19,32 +19,11 @@
         </div>
       </q-card-section>
 
-      <q-separator inset />
-
-      <q-card-section>
-        <div class="text-h6 text-dark text-center">Patient Info</div>
+      <q-card-section v-if="type == 'Prescription' ">
+        <div class="text-h6 text-dark text-center">Patient</div>
       </q-card-section>
-      <q-card-section>
-        <!-- <q-table
-          :grid="$q.screen.xs"
-          title="Treats"
-          :rows="rows"
-          :columns="columns"
-          row-key="name"
-          :filter="filter"
-          hide-header
-        >
-          <template v-slot:top-right>
-            <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-        </q-table> -->
-      </q-card-section>
-
-      <q-separator inset />
+      
+      <PatientTableComp v-if="type == 'Prescription' " />
 
       <q-card-section>
         <div class="text-h6 text-dark text-center" v-if="type == 'Prescription' ">Medicine</div>
@@ -60,6 +39,7 @@
         </div>
         <div class="col"></div>
       </q-card-section>
+      
     </q-card>
   </q-form>
 </template>
@@ -68,11 +48,15 @@
 import { defineComponent, ref, onMounted, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import MedicineRepeaterComp from 'src/components/Prescription/MedicineRepeater/MedicineRepeaterComp.vue'
+import PatientTableComp from 'src/components/Prescription/Patient/PatientTableComp.vue'
+
 export default defineComponent({
     name: 'Prescription',
     components: {
       MedicineRepeaterComp,
+      PatientTableComp,
     },
+    
     setup() {
       const $store = useStore()
       
@@ -91,7 +75,7 @@ export default defineComponent({
 
       //Submit
       const onSubmit = () => {
-        
+        console.log('asd')
       }
 
       //OnMounted
