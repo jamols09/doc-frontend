@@ -14,10 +14,10 @@
                         </q-card-section>
                         <div class="symptoms-container" v-if="symptomsRepeater.length">
                             <div v-for="(symp,index) in symptomsRepeater" :key="symp.name">
-                                <q-card-section class="q-mb-md">
+                                <q-card-section class="">
                                     <!-- Delete button -->
                                     <q-btn @click="removeSymptom(index)" color="white" size="0.8vh" text-color="primary" round icon="close" class="vertical-middle float-right"/> 
-                                    <div class="q-my-sm row">
+                                    <div class="row">
                                         <!-- Symptoms Dropdown -->
                                         <q-select 
                                             use-input 
@@ -58,7 +58,7 @@
                                         </q-input>
                                     </div>
                                     <!-- Textarea -->
-                                    <div style="max-width: auto; max-height: 40px;">
+                                    <div style="max-width: auto;">
                                         <q-input v-model="symp.description" type="textarea" label="Description" class="q-mx-sm" color="blue" label-color="blue" maxlength="210" autogrow />
                                     </div>
                                 </q-card-section>
@@ -71,10 +71,10 @@
                         </q-card-section>
                         <div class="diagnosis-container" v-if="diagnosisRepeater.length">
                             <div v-for="(diag,index) in diagnosisRepeater" :key="diag.name">
-                                <q-card-section class="q-mb-md">
+                                <q-card-section class="">
                                     <!-- Delete button -->
                                     <q-btn @click="removeDiagnosis(index)" color="white" size="0.8vh" text-color="orange" round icon="close" class="vertical-middle float-right"/> 
-                                    <div class="q-my-sm row">
+                                    <div class="row">
                                         <!-- Diagnosis Dropdown -->
                                         <q-select 
                                             use-input 
@@ -115,7 +115,7 @@
                                         </q-input>
                                     </div>
                                     <!-- Textarea -->
-                                    <div style="max-width: auto; max-height: 40px;">
+                                    <div style="max-width: auto;">
                                         <q-input v-model="diag.description" autogrow label-color="orange" color="orange" type="textarea" maxlength="210" label="Description" class="q-mx-sm"/>
                                     </div>
                                 </q-card-section>

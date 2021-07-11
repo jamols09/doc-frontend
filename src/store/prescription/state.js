@@ -2,5 +2,8 @@ export default {
     template: '',
     type: '',
     medicineRepeater: [],
-    signature: ''
+    signature: '',
+    
+    //selected patient
+    selectedPatient: '',
 }

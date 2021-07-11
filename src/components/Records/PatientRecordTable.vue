@@ -3,7 +3,6 @@
     <q-card flat bordered class="my-card">
         <div>
             <q-table
-                title="Treats"
                 style="height: 600px"
                 class="patient-table-sticky-header"
                 :rows="rows"
@@ -19,6 +18,7 @@
                 @update:selected="sendSelected"
                 @request="onRequest"
                 :visible-columns="columnDisplay"
+                :hide-selected-banner="true"
             >
                 <!-- Search Filter -->
                 <template v-slot:top-left>
@@ -27,7 +27,7 @@
                             <q-icon name="search" />
                         </template>
                     </q-input>
-                    <q-select outlined  dense v-model="filterType" emit-value :options="options" hint="Filter Type" />
+                    <q-select outlined dense v-model="filterType" emit-value :options="options" hint="Filter Type" />
                 </template>
                     
                 <!-- Filter type -->
